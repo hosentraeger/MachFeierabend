@@ -1,0 +1,130 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/title_section_worktime">
+        <TimePickerPreference
+            android:key="preference_worktime"
+            android:title="@string/title_edittext_preference_worktime"
+            android:summary="@string/summary_edittext_preference_worktime"
+            android:dialogTitle="@string/dialog_title_edittext_preference_worktime"
+            android:persistent="true"
+            app:pref_hourFormat="auto"
+            app:pref_pickerTime="10:00"
+            app:pref_summaryHasTime="%s" />
+
+        <TimePickerPreference
+            android:key="preference_standard_break"
+            android:title="@string/title_edittext_preference_standard_break"
+            android:summary="@string/summary_edittext_preference_standard_break"
+            android:dialogTitle="@string/dialog_title_edittext_preference_standard_break"
+            android:persistent="true"
+            app:pref_hourFormat="auto"
+            app:pref_pickerTime="00:45"
+            app:pref_summaryHasTime="%s" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_section_notification">
+        <SwitchPreference
+            android:id="@+id/enable_1st_alarm"
+            android:defaultValue="false"
+            android:key="switch_preference_1st_alarm"
+            android:title="Switch preference" />
+
+        <TimePickerPreference
+            android:dependency="switch_preference_1st_alarm"
+            android:key="lead_time_1st_alarm"
+            android:title="@string/title_edittext_preference_notification_remaining_time"
+            android:summary="@string/summary_edittext_preference_notification_remaining_time"
+            android:dialogTitle="@string/dialog_title_edittext_preference_notification_remaining_time"
+            android:persistent="true"
+            app:pref_hourFormat="auto"
+            app:pref_pickerTime="00:30"
+            app:pref_summaryHasTime="%s" />
+
+        <RingtonePreference
+            android:dependency="switch_preference_1st_alarm"
+            android:persistent="true"
+            android:ringtoneType="ringtone"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:key="sound_uri_1st_alarm"
+            android:title="@string/title_edittext_preference_sound_uri_1st_alarm"
+            android:summary="@string/summary_edittext_preference_sound_uri_1st_alarm"
+            android:dialogTitle="@string/dialog_title_edittext_preference_sound_uri_1st_alarm"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_section_warning">
+
+        <SwitchPreference
+            android:id="@+id/enable_2nd_alarm"
+            android:defaultValue="false"
+            android:key="switch_preference_2nd_alarm"
+            android:title="Switch preference" />
+
+        <TimePickerPreference
+            android:dependency="switch_preference_2nd_alarm"
+            android:key="lead_time_2nd_alarm"
+            android:title="@string/title_edittext_preference_warning_remaining_time"
+            android:summary="@string/summary_edittext_preference_warning_remaining_time"
+            android:dialogTitle="@string/dialog_title_edittext_preference_warning_remaining_time"
+            android:persistent="true"
+            app:pref_hourFormat="auto"
+            app:pref_pickerTime="00:15"
+            app:pref_summaryHasTime="%s" />
+
+        <RingtonePreference
+            android:dependency="switch_preference_2nd_alarm"
+            android:persistent="true"
+            android:ringtoneType="ringtone"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:key="sound_uri_2nd_alarm"
+            android:title="@string/title_edittext_preference_sound_uri_2nd_alarm"
+            android:summary="@string/summary_edittext_preference_sound_uri_2nd_alarm"
+            android:dialogTitle="@string/dialog_title_edittext_preference_sound_uri_2nd_alarm"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/title_section_alarm">
+
+        <SwitchPreference
+            android:id="@+id/enable_final_alarm"
+            android:defaultValue="false"
+            android:key="switch_preference_final_alarm"
+            android:title="Switch preference" />
+
+        <TimePickerPreference
+            android:dependency="switch_preference_final_alarm"
+            android:key="lead_time_final_alarm"
+            android:title="@string/title_edittext_preference_alarm_remaining_time"
+            android:summary="@string/summary_edittext_preference_alarm_remaining_time"
+            android:dialogTitle="@string/dialog_title_edittext_preference_alarm_remaining_time"
+            android:persistent="true"
+            app:pref_hourFormat="auto"
+            app:pref_pickerTime="00:05"
+            app:pref_summaryHasTime="%s" />
+
+        <RingtonePreference
+            android:dependency="switch_preference_final_alarm"
+            android:persistent="true"
+            android:ringtoneType="ringtone"
+            android:showDefault="true"
+            android:showSilent="true"
+            android:key="sound_uri_final_alarm"
+            android:title="@string/title_edittext_preference_sound_uri_final_alarm"
+            android:summary="@string/summary_edittext_preference_sound_uri_final_alarm"
+            android:dialogTitle="@string/dialog_title_edittext_preference_sound_uri_final_alarm"
+            />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,20 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <!-- Style for an Preference Entry -->
+    <style name="AppPreference">
+        <item name="android:layout">@layout/preference_material</item>
+    </style>
+
+    <!-- Style for a DialogPreference Entry -->
+    <style name="AppPreference.DialogPreference">
+        <item name="positiveButtonText">@android:string/ok</item>
+        <item name="negativeButtonText">@android:string/cancel</item>
+    </style>
+
+</resources>

@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Mach Feierabend</string>
+
+    <string name="title_section_worktime">Arbeitszeit</string>
+    <string name="title_edittext_preference_worktime">Maximale Arbeitszeit</string>
+    <string name="summary_edittext_preference_worktime">Die maximal zulässige tägliche Arbeitszeit</string>
+    <string name="dialog_title_edittext_preference_worktime">Gib die maximal zulässige tägliche Arbeitszeit an!</string>
+    <string name="title_edittext_preference_standard_break">Standard-Pause</string>
+    <string name="summary_edittext_preference_standard_break">Dauer der Standard-Pause (min)</string>
+    <string name="dialog_title_edittext_preference_standard_break">Wenn keine Pause gestempelt wird, berechnet die App diese Standard-Pause</string>
+
+    <string name="title_section_notification">Benachrichtigung</string>
+    <string name="title_edittext_preference_notification_remaining_time">Restzeit</string>
+    <string name="summary_edittext_preference_notification_remaining_time">Zeit bis zum Feierabend</string>
+    <string name="dialog_title_edittext_preference_notification_remaining_time">Gib die Vorlaufzeit der Benachrichtigung an!</string>
+
+
+    <string name="title_section_warning">Warnung</string>
+    <string name="title_edittext_preference_warning_remaining_time">Restzeit</string>
+    <string name="summary_edittext_preference_warning_remaining_time">Zeit bis zum Feierabend</string>
+    <string name="dialog_title_edittext_preference_warning_remaining_time">Gib die Vorlaufzeit der Warnmeldung an!</string>
+
+    <string name="title_section_alarm">Alarm</string>
+    <string name="title_edittext_preference_alarm_remaining_time">Restzeit</string>
+    <string name="summary_edittext_preference_alarm_remaining_time">Zeit bis zum Feierabend</string>
+    <string name="dialog_title_edittext_preference_alarm_remaining_time">Gib die Vorlaufzeit des Alarms an!</string>
+
+    <string name="max_worktime_default_value">10:00</string>
+    <string name="standard_break_default_value">00:45</string>
+
+    <string name="notification_format">Du kannst noch maximal %dh%02dmin arbeiten.</string>
+    <string name="notification_title">Mach Feierabend!</string>
+    <string name="default_lead_time_1st_alarm">00:30</string>
+    <string name="default_lead_time_2nd_alarm">00:15</string>
+    <string name="default_lead_time_final_alarm">00:05</string>
+    <string name="alarm_notification_title">Mach Feierabend!</string>
+    <string name="alarm_notification_text_1st">Erinnerung: Du musst bald ausstempeln!</string>
+    <string name="alarm_notification_text_2nd">Warnung: Geh jetzt ausstempeln!</string>
+    <string name="alarm_notification_text_final">ALARM!!! Wenn du JETZT nicht ausstempelst, bekommst du ein Riesenproblem!</string>
+    <string name="alarm_notification_text_failed">Das war\'s. Du hast du zulässige Arbeitszeit überschritten. Toll!</string>
+    <string name="title_edittext_preference_sound_uri_1st_alarm">Sound wählen</string>
+    <string name="summary_edittext_preference_sound_uri_1st_alarm">Sound für 1. Alarm</string>
+    <string name="dialog_title_edittext_preference_sound_uri_1st_alarm">Wähle den Sound für den 1. Alarm aus</string>
+    <string name="title_edittext_preference_sound_uri_2nd_alarm">Sound wählen</string>
+    <string name="summary_edittext_preference_sound_uri_2nd_alarm">Sound für 2. Alarm</string>
+    <string name="dialog_title_edittext_preference_sound_uri_2nd_alarm">Wähle den Sound für den 2. Alarm aus</string>
+    <string name="title_edittext_preference_sound_uri_final_alarm">Sound wählen</string>
+    <string name="summary_edittext_preference_sound_uri_final_alarm">Sound für finalen Alarm</string>
+    <string name="dialog_title_edittext_preference_sound_uri_final_alarm">Wähle den Sound für den finalen Alarm aus</string>
+    <string name="status_fragment_description">Diese App warnt Dich, wenn du im Begriff bist, die gesetzlich zulässige Arbeitszeit zu überschreiten.\n\nDas ist alles.</string>
+    <string name="status_fragment_time_left_1">Du darfst noch</string>
+    <string name="status_fragment_time_left_2">arbeiten.</string>
+    <string name="key_notification_id">de.fsiebecke.machfeierabend.notificationId</string>
+</resources>

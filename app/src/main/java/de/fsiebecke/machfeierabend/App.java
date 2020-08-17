@@ -153,6 +153,8 @@ public class App extends Application {
         // remove "app-in-background"-notification
         cancelAppNotification ( );
         cancelUpdateNotificationAlarm();
+        // remove previous alarm notifications
+        cancelAlarmNotifications();
 
         switch (notificationId) {
             case AppConstants.NOTIFICATION_ID_ALARM_1ST:

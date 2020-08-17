@@ -639,6 +639,7 @@ public class App extends Application {
      */
     public void sentToForeground ( ) {
         m_isInBackground = false;
+        stopRingtone();
         goForeground();
     }
 

@@ -630,8 +630,11 @@ public class App extends Application {
      * prepare foreground operation
      */
     public void goForeground ( ) {
-        cancelUpdateNotificationAlarm();
+        // no notification updates required
         cancelAppNotification();
+        cancelUpdateNotificationAlarm();
+        // user has already seen the notification
+        cancelAlarmNotifications();
         m_eventLog.restoreEventlog();
     }
 

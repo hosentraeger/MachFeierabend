@@ -1,13 +1,13 @@
-/**
- * app class
- * provides:
- * - creation of notification channels
- * - holds AlarmManager instance
- * - holds NotificationManager instance
- * - holds SharedPreferences
- * - holds EventManger (list of checkin/checkout-timestamps)
- * - response to Alarms (Alarm if time is up + trigger to update background-notification)
- * - calculation of time left
+/*
+  app class
+  provides:
+  - creation of notification channels
+  - holds AlarmManager instance
+  - holds NotificationManager instance
+  - holds SharedPreferences
+  - holds EventManger (list of checkin/checkout-timestamps)
+  - response to Alarms (Alarm if time is up + trigger to update background-notification)
+  - calculation of time left
  */
 
 package de.fsiebecke.machfeierabend;
@@ -143,6 +143,7 @@ public class App extends Application {
 
         // remove "app-in-background"-notification
         cancelAppNotification ( );
+        cancelUpdateNotificationAlarm();
 
         switch (notificationId) {
             case AppConstants.NOTIFICATION_ID_ALARM_1ST:
@@ -253,6 +254,17 @@ public class App extends Application {
         mBuilder.setContentIntent(contentIntent);
         mBuilder.setOngoing(true);
         m_notificationManager.notify(AppConstants.NOTIFICATION_ID_APP_UPDATE, mBuilder.build());
+
+    }
+
+    /**
+     *
+     */
+    public void handleAppAlarm () {
+        // update max remaining work time in app notification
+        updateAppNotification ( );
+        // reschedule alarm in 30s
+        setUpdateNotificationAlarm(30 * 1000);
     }
 
     /**
@@ -274,7 +286,7 @@ public class App extends Application {
     }
 
     /**
-     * set an alarm which is fired soon and triggers an ongoing notification while the
+     * set an alarm which will trigger an update to the ongoing notification while the
      * app is in background (handled in AlertReceiver)
      *
      * @param ms time until alarm is fired
@@ -595,14 +607,31 @@ public class App extends Application {
         getEventLog().saveEventlog();
     }
 
+
+    /**
+     * prepare background operation
+     */
+    public void goBackground ( ) {
+        updateAppNotification ( );
+        setUpdateNotificationAlarm(0);
+        m_eventLog.saveEventlog();
+    }
+
+    /**
+     * prepare foreground operation
+     */
+    public void goForeground ( ) {
+        cancelUpdateNotificationAlarm();
+        cancelAppNotification();
+        m_eventLog.restoreEventlog();
+    }
+
     /**
      * app was sent to background
      */
     public void sentToBackground ( ) {
         m_isInBackground = true;
-        updateAppNotification ( );
-        setUpdateNotificationAlarm(0);
-        m_eventLog.saveEventlog();
+        goBackground();
     }
 
     /**
@@ -610,15 +639,16 @@ public class App extends Application {
      */
     public void sentToForeground ( ) {
         m_isInBackground = false;
-        cancelUpdateNotificationAlarm();
-        cancelAppNotification();
-        m_eventLog.restoreEventlog();
+        goForeground();
     }
 
     /**
-     * getter
+     * alarm notification was swiped out
      */
-    public boolean isInBackground ( ) {
-        return m_isInBackground;
+    public void onDismissAlarmNotification ( ) {
+        stopRingtone();
+        if (m_isInBackground) { // if app is in background, restore background operation
+            goBackground();
+        }
     }
 }

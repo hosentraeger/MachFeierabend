@@ -1,4 +1,4 @@
-/**
+/*
  * receive broadcasts for various alarms (1., 2., last alarm) and
  * for updating the notification while the app is in background
  */
@@ -27,16 +27,11 @@ public class AlertReceiver extends WakefulBroadcastReceiver {
                 break;
             case AppConstants.NOTIFICATION_ID_APP_UPDATE:
                 Log.d(TAG, "-> app update");
-                App.getApplication().updateAppNotification();
-                // reschedule alarm in 30s
-                App.getApplication().setUpdateNotificationAlarm(30 * 1000);
+                App.getApplication().handleAppAlarm();
                 break;
             case AppConstants.NOTIFICATION_ID_DISMISSED:
-                App.getApplication().stopRingtone();
-                if ( App.getApplication().isInBackground()) {
-                    App.getApplication().updateAppNotification();
-                }
                 Log.d(TAG, "-> notification dismissed");
+                App.getApplication().onDismissAlarmNotification();
                 break;
             case AppConstants.NOTIFICATION_ID_STOP_RINGTONE:
                 Log.d(TAG, "-> stop ringtone");

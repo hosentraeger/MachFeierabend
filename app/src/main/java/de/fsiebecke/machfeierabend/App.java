@@ -18,8 +18,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.Ringtone;
@@ -94,6 +96,13 @@ public class App extends Application {
 
         m_notificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // register screen on/off broadcast events
+        // INITIALIZE RECEIVER
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
     }
 
     /**
@@ -652,4 +661,21 @@ public class App extends Application {
             goBackground();
         }
     }
+
+    /**
+     * action if screen was set off
+     * called from ScreenReceiver
+     */
+    public void onScreenOff ( ) {
+        Log.d ( TAG, "onScreenOff" );
+        stopRingtone();
+    }
+    /**
+     * action if screen was set on
+     * called from ScreenReceiver
+     */
+    public void onScreenOn ( ) {
+        Log.d ( TAG, "onScreenOn" );
+    }
+
 }

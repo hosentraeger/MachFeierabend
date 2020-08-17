@@ -45,6 +45,7 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
              App.getApplication().stopRingtone();
+             App.getApplication().cancelAlarmNotifications();
              m_muteButton.setVisibility(View.INVISIBLE);
             }
         });

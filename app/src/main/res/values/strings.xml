@@ -56,4 +56,7 @@
     <string name="content_description_stop_button">stop button</string>
     <string name="content_description_mute_button">mute button</string>
     <string name="default_value_remaining_time">--.--.--</string>
+    <string name="switch_preference_enable_1st_alarm">1. Alarm aktiv</string>
+    <string name="switch_preference_enable_2nd_alarm">2. Alarm aktiv</string>
+    <string name="switch_preference_enable_final_alarm">Letzter Alarm aktiv</string>
 </resources>

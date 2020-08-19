@@ -31,7 +31,7 @@
             android:id="@+id/enable_1st_alarm"
             android:defaultValue="false"
             android:key="switch_preference_1st_alarm"
-            android:title="Switch preference" />
+            android:title="@string/switch_preference_enable_1st_alarm" />
 
         <TimePickerPreference
             android:dependency="switch_preference_1st_alarm"
@@ -65,7 +65,7 @@
             android:id="@+id/enable_2nd_alarm"
             android:defaultValue="false"
             android:key="switch_preference_2nd_alarm"
-            android:title="Switch preference" />
+            android:title="@string/switch_preference_enable_2nd_alarm" />
 
         <TimePickerPreference
             android:dependency="switch_preference_2nd_alarm"
@@ -99,7 +99,7 @@
             android:id="@+id/enable_final_alarm"
             android:defaultValue="false"
             android:key="switch_preference_final_alarm"
-            android:title="Switch preference" />
+            android:title="@string/switch_preference_enable_final_alarm" />
 
         <TimePickerPreference
             android:dependency="switch_preference_final_alarm"

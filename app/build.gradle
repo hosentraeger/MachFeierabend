@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 28
     buildToolsVersion '29.0.3'
 
     def versionPropsFile = file('version.properties')
@@ -38,7 +38,7 @@ android {
 
         defaultConfig {
             minSdkVersion 21
-            targetSdkVersion 30
+            targetSdkVersion 28
             applicationId "de.fsiebecke.machfeierabend" // 3: change to your package name
             versionCode versionProps['VERSION_NUMBER'].toInteger()
             versionName "${mVersionName} Build: ${versionProps['VERSION_BUILD']}"

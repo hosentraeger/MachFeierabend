@@ -87,6 +87,14 @@ public class EventLog {
         editor.commit();
     }
 
+    /**
+     *
+     * @return true if at least one timestamp exists
+     */
+    public boolean isActive ( ) {
+        return m_eventTimestamps.size() > 0;
+    }
+
     public void restoreEventlog ( ) {
         SharedPreferences shref;
         SharedPreferences.Editor editor;

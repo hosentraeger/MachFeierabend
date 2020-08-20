@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.legacy.content.WakefulBroadcastReceiver;
+//import android.content.BroadcastReceiver;
 
 public class AlertReceiver extends WakefulBroadcastReceiver {
+//public class AlertReceiver extends BroadcastReceiver {
     private static final String TAG = "AlertReceiver";
 
     @Override

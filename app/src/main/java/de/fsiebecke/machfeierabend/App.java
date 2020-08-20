@@ -623,9 +623,12 @@ public class App extends Application {
      * prepare background operation
      */
     public void goBackground ( ) {
-        updateAppNotification ( );
-        setUpdateNotificationAlarm(0);
-        m_eventLog.saveEventlog();
+        // do not show app notification if timer not started
+        if ( m_eventLog.isActive()) {
+            updateAppNotification();
+            setUpdateNotificationAlarm(0);
+            m_eventLog.saveEventlog();
+        }
     }
 
     /**

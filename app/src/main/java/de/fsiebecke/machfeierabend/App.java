@@ -205,7 +205,6 @@ public class App extends Application {
                         .setContentIntent(contentIntent)
                         .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
         m_notificationManager.notify(notificationId, mBuilder.build());
-        //           showToast(context);
         vibrate(this);
         stopRingtone();
         m_ringtone = RingtoneManager.getRingtone(this, uriSound);
@@ -342,13 +341,6 @@ public class App extends Application {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(2000);
     }
-
-    /*
-        private void showToast ( Context context) {
-            Toast.makeText(context, "Don't panic but your time is up!!!!.",
-                    Toast.LENGTH_LONG).show();
-        }
-    */
 
     /**
      * retrieves a preference as long value. Default value applies

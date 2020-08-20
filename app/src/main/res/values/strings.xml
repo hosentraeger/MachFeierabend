@@ -8,7 +8,6 @@
     <string name="title_edittext_preference_standard_break">Standard-Pause</string>
     <string name="summary_edittext_preference_standard_break">Dauer der Standard-Pause (min)</string>
     <string name="dialog_title_edittext_preference_standard_break">Wenn keine Pause gestempelt wird, berechnet die App diese Standard-Pause</string>
-
     <string name="title_section_notification">Benachrichtigung</string>
     <string name="title_edittext_preference_notification_remaining_time">Restzeit</string>
     <string name="summary_edittext_preference_notification_remaining_time">Zeit bis zum Feierabend</string>
@@ -38,6 +37,8 @@
     <string name="alarm_notification_text_2nd">Warnung: Geh jetzt ausstempeln!</string>
     <string name="alarm_notification_text_final">ALARM!!! Wenn du JETZT nicht ausstempelst, bekommst du ein Riesenproblem!</string>
     <string name="alarm_notification_text_failed">Das war\'s. Du hast du zulässige Arbeitszeit überschritten. Toll!</string>
+    <string name="info_app_usage">Drücke "Play", sobald du einstempelst. Drücke "Pause", wenn du zur Pause ausstempelst. Abbrechen mit "Stop".</string>
+    <string name="info_individual_break_calculated">"Du hast eine Pause gestempelt. Die App berechnet die maximale Arbeitszeit neu."</string>
     <string name="title_edittext_preference_sound_uri_1st_alarm">Sound wählen</string>
     <string name="summary_edittext_preference_sound_uri_1st_alarm">Sound für 1. Alarm</string>
     <string name="dialog_title_edittext_preference_sound_uri_1st_alarm">Wähle den Sound für den 1. Alarm aus</string>

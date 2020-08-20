@@ -15,6 +15,7 @@ import java.util.List;
 public class EventLog {
     public static final String TAG = "EventLog";
     private ArrayList<Date> m_eventTimestamps;
+
     enum CHECKIN_STATE {
         CHECKED_IN,
         CHECKED_OUT
@@ -93,6 +94,14 @@ public class EventLog {
      */
     public boolean isActive ( ) {
         return m_eventTimestamps.size() > 0;
+    }
+
+    /**
+     *
+     * @return true if the first break was logged (i.e. log size is two: checkin+1st checkout)
+     */
+    public boolean isFirstBreakLogged() {
+        return m_eventTimestamps.size() == 2;
     }
 
     public void restoreEventlog ( ) {

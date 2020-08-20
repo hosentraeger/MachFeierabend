@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,10 +70,14 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"pause clicked." );
-                App.getApplication().getEventLog().logEvent();
                 App.getApplication().setTimerIsRunning(false);
                 updateButtonStates();
                 App.getApplication().cancelAlarms ( );
+                App.getApplication().getEventLog().logEvent();
+                if ( App.getApplication().getEventLog().isFirstBreakLogged ( ) ) {
+                    Toast.makeText(getActivity(), R.string.info_individual_break_calculated,
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -113,7 +118,7 @@ public class StatusFragment extends Fragment {
                                 m_info.setText(R.string.alarm_notification_text_final);
                                 break;
                             default:
-                                m_info.setText ( "" );
+                                m_info.setText(R.string.info_app_usage);
                         }
                     } else {
                         m_info.setText(R.string.alarm_notification_text_failed);

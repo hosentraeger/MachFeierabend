@@ -21,6 +21,5 @@
         </activity>
         <receiver android:name=".AlertReceiver" android:exported="false" >
         </receiver>
-        <service android:name="de.fsiebecke.machfeierabend.ClearFromRecentService" android:stopWithTask="false" />
     </application>
 </manifest>

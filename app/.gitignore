@@ -2,5 +2,7 @@ build/generated
 build/intermediates
 build/tmp
 build/outputs/logs
-build/outputs/apk/*/*
-!build/outputs/apk/*/*.apk
+build/outputs/apk/debug/*
+!build/outputs/apk/debug/*.apk
+build/outputs/apk/release/*
+!build/outputs/apk/release/*.apk

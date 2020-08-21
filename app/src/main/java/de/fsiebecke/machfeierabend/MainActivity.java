@@ -54,49 +54,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         getSupportFragmentManager().beginTransaction().replace(
                 R.id.fragment_container,new StatusFragment()).commit();
-
-        if ( !App.getApplication().getEventLog().compareEventLogWithPersistedLog()
-//                &&  ( App.getApplication().getEventLog().getSecondsSinceStart ( ) < 24 * 60 * 60 )
-        ) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle(R.string.dialog_title_data_found);
-                    builder.setMessage(R.string.dialog_details_data_found);
-
-                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            App.getApplication().getEventLog().clearLog();
-                            StatusFragment fragment = (StatusFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                            fragment.refreshDisplay();
-                            dialog.cancel();
-                        }
-                    });
-
-                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            App.getApplication().getEventLog().restoreEventlog();
-                            StatusFragment fragment = (StatusFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                            // if we started with restored data, check if we have to start the timer
-                            boolean b = App.getApplication().getEventLog().isRunning();
-                            App.getApplication().setTimerIsRunning(b);
-                            if ( b )
-                                fragment.start ( );
-                            fragment.refreshDisplay();
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertdialog = builder.create();
-                    alertdialog.show();
-                }
-            }, 1000);
-        }
     }
-
-
 
     @Override
     protected void onPause() {

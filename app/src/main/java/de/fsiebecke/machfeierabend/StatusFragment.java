@@ -120,29 +120,7 @@ public class StatusFragment extends Fragment {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if ( App.getApplication().getTimerIsRunning() ) {
-                    if ( m_timeLeft > 0 ) {
-                        m_timeLeft--;
-                        setRemainingTime ( );
-                        if ( App.getApplication().isRingtonePlaying() ) m_muteButton.setVisibility(View.VISIBLE);
-                        else m_muteButton.setVisibility(View.INVISIBLE);
-                        switch ( App.getApplication().getCurrentAlarmStage() )  {
-                            case ALARM_STAGE_1ST:
-                                m_info.setText(R.string.alarm_notification_text_1st);
-                                break;
-                            case ALARM_STAGE_2ND:
-                                m_info.setText(R.string.alarm_notification_text_2nd);
-                                break;
-                            case ALARM_STAGE_FINAL:
-                                m_info.setText(R.string.alarm_notification_text_final);
-                                break;
-                            default:
-                                m_info.setText(R.string.info_app_usage);
-                        }
-                    } else {
-                        m_info.setText(R.string.alarm_notification_text_failed);
-                    }
-                }
+                doPeriodicTask();
                 refreshHandler.postDelayed(this, 1 * 1000);
             }
         };
@@ -172,7 +150,34 @@ public class StatusFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.d(TAG,"onResume." );
+        App.getApplication().getEventLog().restoreEventlog();
+        // TODO: check if session expired
+        // TODO: check if session is very old
+        // TODO: is this the right place for these checks?
+        /*
+        if ( App.getApplication().getEventLog().getSecondsSinceStart ( ) > 60 ) { // 24 * 60 * 60 ) {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.dialog_title_session_too_old);
+            builder.setMessage(R.string.dialog_details_session_too_old);
+
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    App.getApplication().getEventLog().clearLog();
+                    dialog.cancel();
+                }
+            });
+            android.app.AlertDialog alertdialog = builder.create();
+            alertdialog.show();
+        }
+         */
         refreshDisplay();
         super.onResume();
     }
@@ -180,6 +185,7 @@ public class StatusFragment extends Fragment {
     @Override
     public void onPause() {
         Log.d(TAG,"onPause." );
+        App.getApplication().getEventLog().saveEventlog();
         super.onPause();
     }
 
@@ -227,6 +233,35 @@ public class StatusFragment extends Fragment {
                 enableImageButton(m_stopButton,R.id.stopButton, true);
             else
                 enableImageButton(m_stopButton,R.id.stopButton, false);
+        }
+    }
+
+    /**
+     * update remaining time
+     */
+    private void doPeriodicTask ( ) {
+        if ( App.getApplication().getTimerIsRunning() ) {
+            if ( m_timeLeft > 0 ) {
+                m_timeLeft = App.getApplication().getRemainingWorktime();
+                setRemainingTime ( );
+                if ( App.getApplication().isRingtonePlaying() ) m_muteButton.setVisibility(View.VISIBLE);
+                else m_muteButton.setVisibility(View.INVISIBLE);
+                switch ( App.getApplication().getCurrentAlarmStage() )  {
+                    case ALARM_STAGE_1ST:
+                        m_info.setText(R.string.alarm_notification_text_1st);
+                        break;
+                    case ALARM_STAGE_2ND:
+                        m_info.setText(R.string.alarm_notification_text_2nd);
+                        break;
+                    case ALARM_STAGE_FINAL:
+                        m_info.setText(R.string.alarm_notification_text_final);
+                        break;
+                    default:
+                        m_info.setText(R.string.info_app_usage);
+                }
+            } else {
+                m_info.setText(R.string.alarm_notification_text_failed);
+            }
         }
     }
 }

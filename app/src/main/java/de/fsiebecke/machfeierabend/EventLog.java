@@ -146,6 +146,7 @@ public class EventLog {
     public long getSecondsSinceStart ( ) {
         if ( m_eventTimestamps.size ( ) == 0 ) return -1;
         Date currentTime = Calendar.getInstance().getTime();
-        return ( m_eventTimestamps.get(0).getTime ( ) - currentTime.getTime() ) / 1000;
+        long msec = currentTime.getTime() - m_eventTimestamps.get(0).getTime ( );
+        return ( msec ) / 1000;
     }
 }

@@ -379,7 +379,8 @@ public class App extends Application {
 
         long alreadyWorked = getEventLog().calculateElapsedTime(EventLog.CHECKIN_STATE.CHECKED_IN);
         long breakTime = getEventLog().calculateElapsedTime(EventLog.CHECKIN_STATE.CHECKED_OUT);
-        if (breakTime == 0) maxWorktime += defaultBreak;
+        if ( !getEventLog().isFirstBreakLogged())
+            maxWorktime += defaultBreak;
         maxWorktime -= alreadyWorked;
         Log.d(TAG, "getRemainingWorktime, result=" + maxWorktime + "." );
         return maxWorktime;

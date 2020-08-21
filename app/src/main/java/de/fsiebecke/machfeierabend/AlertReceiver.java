@@ -6,9 +6,11 @@
 package de.fsiebecke.machfeierabend;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.legacy.content.WakefulBroadcastReceiver;
 //import android.content.BroadcastReceiver;
 
@@ -18,6 +20,8 @@ public class AlertReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        String s = intent.getAction();
+        Log.d ( TAG, s );
         int notificationId = intent.getExtras().getInt(context.getResources().getString(R.string.key_notification_id));
         Log.d(TAG, "onReceive (notificationId=" + notificationId + ").");
         switch (notificationId) {
@@ -34,6 +38,10 @@ public class AlertReceiver extends WakefulBroadcastReceiver {
             case AppConstants.NOTIFICATION_ID_DISMISSED:
                 Log.d(TAG, "-> notification dismissed");
                 App.getApplication().onDismissAlarmNotification();
+                break;
+            case AppConstants.NOTIFICATION_ID_APP_NOTIFICATION_DISMISSED:
+                Log.d(TAG, "-> app notification dismissed");
+                App.getApplication().onDismissAppNotification ( );
                 break;
             case AppConstants.NOTIFICATION_ID_STOP_RINGTONE:
                 Log.d(TAG, "-> stop ringtone");

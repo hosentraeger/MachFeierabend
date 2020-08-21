@@ -12,6 +12,7 @@ public class AppConstants {
     public static final int NOTIFICATION_ID_ALARM_FINAL = 3;
     public static final int NOTIFICATION_ID_STOP_RINGTONE = 10;
     public static final int NOTIFICATION_ID_DISMISSED = 11;
+    public static final int NOTIFICATION_ID_APP_NOTIFICATION_DISMISSED = 12;
 
     public static final String PREF_NAME_WORKTIME = "preference_worktime";
     public static final String PREF_NAME_STANDARD_BREAK = "preference_standard_break";

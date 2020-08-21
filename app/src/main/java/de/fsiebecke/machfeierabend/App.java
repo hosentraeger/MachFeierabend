@@ -20,6 +20,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -31,6 +32,9 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import java.util.Calendar;
 import java.util.Objects;
@@ -47,7 +51,6 @@ public class App extends Application {
     private Ringtone m_ringtone = null;
     private ALARM_STAGE m_currentAlarmStage = ALARM_STAGE.ALARM_STAGE_NONE;
     private boolean m_isInBackground = false;
-    private boolean m_userKilledApp = false;
 
     enum ALARM_STAGE {
         ALARM_STAGE_NONE,
@@ -76,8 +79,6 @@ public class App extends Application {
     public SharedPreferences getMySharedPreferences() {
         return m_sharedPreferences;
     }
-    public boolean didUserKilledApp ( ) { return m_userKilledApp; };
-    public void userKilledApp ( ) { m_userKilledApp = true; };
 
     @Override
     public void onCreate() {
@@ -122,6 +123,7 @@ public class App extends Application {
                     NotificationManager.IMPORTANCE_DEFAULT
             );
 
+            channel1.setDescription("app");
             channel1.setSound(null, null);
             channel1.setShowBadge(false);
             manager.createNotificationChannel(channel1);
@@ -261,9 +263,11 @@ public class App extends Application {
                         .setSmallIcon(R.drawable.ic_baseline_timer_24)
                         .setContentTitle(res.getString(R.string.notification_title))
                         .setContentText(remainingWorktime)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH);
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setOngoing(true);
+                        .setDeleteIntent(createOnAppNotificationDismissedIntent(this ))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setContentIntent(contentIntent);
+        if ( m_eventLog.isActive())
+            mBuilder.setOngoing(true);
         m_notificationManager.notify(AppConstants.NOTIFICATION_ID_APP_UPDATE, mBuilder.build());
 
     }
@@ -579,9 +583,25 @@ public class App extends Application {
         Intent intent = new Intent(context, AlertReceiver.class);
         intent.putExtra(getResources().getString(R.string.key_notification_id),
                 AppConstants.NOTIFICATION_ID_DISMISSED);
+        intent.setAction("dismiss alarm" );
 
         return PendingIntent.getBroadcast(context.getApplicationContext(),
                 AppConstants.NOTIFICATION_ID_DISMISSED, intent, 0);
+    }
+
+    /**
+     * prepares an intent which notifies the app if user swiped out the app notification
+     * @param context a context
+     * @return prepared intent
+     */
+    private PendingIntent createOnAppNotificationDismissedIntent(Context context) {
+        Intent intent = new Intent(context, AlertReceiver.class);
+        intent.putExtra(getResources().getString(R.string.key_notification_id),
+                AppConstants.NOTIFICATION_ID_APP_NOTIFICATION_DISMISSED);
+        intent.setAction("dismiss app" );
+
+        return PendingIntent.getBroadcast(context.getApplicationContext(),
+                AppConstants.NOTIFICATION_ID_APP_NOTIFICATION_DISMISSED, intent, 0);
     }
 
     /**
@@ -661,6 +681,19 @@ public class App extends Application {
         if (m_isInBackground) { // if app is in background, restore background operation
             goBackground();
         }
+    }
+
+    /**
+     * alarm notification was swiped out
+     */
+    public void onDismissAppNotification ( ) {
+        stopRingtone();
+        cancelAlarmNotifications();
+        cancelAlarms();
+        cancelStopRingtoneAlarm();
+        cancelUpdateNotificationAlarm();
+        getEventLog().clearLog();
+        getEventLog().saveEventlog();
     }
 
     /**

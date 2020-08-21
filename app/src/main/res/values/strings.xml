@@ -66,4 +66,6 @@
     <string name="yes">ja</string>
     <string name="dialog_title_session_stop">Session abbrechen</string>
     <string name="dialog_details_session_stop">Willst du die Session abbrechen?</string>
+    <string name="dialog_title_app_stop">App beenden</string>
+    <string name="dialog_details_app_stop">Willst du die App wirlich beenden und die Alarme deaktivieren?</string>
 </resources>

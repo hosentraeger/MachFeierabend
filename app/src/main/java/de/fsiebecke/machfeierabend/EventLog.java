@@ -103,8 +103,10 @@ public class EventLog {
         shref = App.getApplication().getMySharedPreferences();
         Gson gson = new Gson();
         String response=shref.getString(AppConstants.PREF_NAME_EVENTLOG, "");
-        return gson.fromJson(response,
+        ArrayList<Date> ret =  gson.fromJson(response,
                 new TypeToken<List<Date>>(){}.getType());
+        if ( null == ret ) ret = new ArrayList<Date>();
+        return ret;
     }
 
     /**

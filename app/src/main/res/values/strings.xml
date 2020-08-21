@@ -60,4 +60,8 @@
     <string name="switch_preference_enable_1st_alarm">1. Alarm aktiv</string>
     <string name="switch_preference_enable_2nd_alarm">2. Alarm aktiv</string>
     <string name="switch_preference_enable_final_alarm">Letzter Alarm aktiv</string>
+    <string name="dialog_details_data_found">Die App hat gespeicherte Daten gefunden. Wenn du \'ja\' klickst, werden sie geladen.</string>
+    <string name="dialog_title_data_found">Vorhandene Daten weiter verwenden?</string>
+    <string name="no">nein</string>
+    <string name="yes">ja</string>
 </resources>

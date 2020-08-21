@@ -31,8 +31,6 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatCallback;
 import androidx.core.app.NotificationCompat;
 import java.util.Calendar;
 import java.util.Objects;
@@ -49,6 +47,7 @@ public class App extends Application {
     private Ringtone m_ringtone = null;
     private ALARM_STAGE m_currentAlarmStage = ALARM_STAGE.ALARM_STAGE_NONE;
     private boolean m_isInBackground = false;
+    private boolean m_userKilledApp = false;
 
     enum ALARM_STAGE {
         ALARM_STAGE_NONE,
@@ -77,6 +76,8 @@ public class App extends Application {
     public SharedPreferences getMySharedPreferences() {
         return m_sharedPreferences;
     }
+    public boolean didUserKilledApp ( ) { return m_userKilledApp; };
+    public void userKilledApp ( ) { m_userKilledApp = true; };
 
     @Override
     public void onCreate() {
@@ -85,7 +86,8 @@ public class App extends Application {
 
         // this service has only one job:
         // remove notifications and timers if user "swiped out" the app
-        startService(new Intent(getBaseContext(), ClearFromRecentService.class));
+        // don't start the service, we don't need this information
+        // startService(new Intent(getBaseContext(), ClearFromRecentService.class));
 
         m_sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -104,7 +106,6 @@ public class App extends Application {
         BroadcastReceiver mReceiver = new ScreenReceiver();
         registerReceiver(mReceiver, filter);
     }
-
     /**
      * create two notification channels
      *   app-channel, used for showing an ongoing notification if the app is in background
@@ -376,8 +377,8 @@ public class App extends Application {
                 AppConstants.PREF_NAME_STANDARD_BREAK,
                 R.string.standard_break_default_value);
 
-        long alreadyWorked = getEventLog().calculateTime(EventLog.CHECKIN_STATE.CHECKED_IN);
-        long breakTime = getEventLog().calculateTime(EventLog.CHECKIN_STATE.CHECKED_OUT);
+        long alreadyWorked = getEventLog().calculateElapsedTime(EventLog.CHECKIN_STATE.CHECKED_IN);
+        long breakTime = getEventLog().calculateElapsedTime(EventLog.CHECKIN_STATE.CHECKED_OUT);
         if (breakTime == 0) maxWorktime += defaultBreak;
         maxWorktime -= alreadyWorked;
         Log.d(TAG, "getRemainingWorktime, result=" + maxWorktime + "." );
@@ -598,6 +599,7 @@ public class App extends Application {
      * shutdown app: clear all alarms, notifications...
      */
     public void shutdown ( ) {
+        /*
         // cancel all alarms
         cancelUpdateNotificationAlarm();
         cancelAlarms(); // max-worktime-exceeded-alarms
@@ -605,11 +607,9 @@ public class App extends Application {
         // remove all notifications
         cancelAppNotification();
         cancelAlarmNotifications();
-        // save an empty log
-        getEventLog().clearLog();
         getEventLog().saveEventlog();
+         */
     }
-
 
     /**
      * prepare background operation

@@ -52,10 +52,10 @@ public class EventLog {
 
     /**
      * calculate total time for either worktime or break
-     * @param checkin_state
+     * @param checkin_state which state to check: CHECKED_IN or CHECKED_OUT
      * @return total time in sec
      */
-    long calculateTime ( CHECKIN_STATE checkin_state) {
+    long calculateElapsedTime(CHECKIN_STATE checkin_state) {
         long retVal = 0;
         if ( m_eventTimestamps.size()== 0 ) return retVal; // no events logged so far
         // temporary add current Time to EventLog to calculate total time until now
@@ -72,10 +72,16 @@ public class EventLog {
         return retVal;
     }
 
+    /**
+     * clears the log
+     */
     void clearLog ( ) {
         m_eventTimestamps.clear();
     }
 
+    /**
+     * saves the log to shared prefs (as json string)
+     */
     public void saveEventlog ( ) {
         SharedPreferences shref;
         SharedPreferences.Editor editor;
@@ -83,13 +89,40 @@ public class EventLog {
         Gson gson = new Gson();
         String json = gson.toJson(m_eventTimestamps);
         editor = shref.edit();
-        editor.remove(AppConstants.PREF_NAME_EVENTLOG).commit();
+        editor.remove(AppConstants.PREF_NAME_EVENTLOG).apply();
         editor.putString(AppConstants.PREF_NAME_EVENTLOG, json);
         editor.commit();
     }
 
     /**
-     *
+     * @return saved event log
+     */
+    private ArrayList <Date> loadEventLog ( ) {
+        SharedPreferences shref;
+        SharedPreferences.Editor editor;
+        shref = App.getApplication().getMySharedPreferences();
+        Gson gson = new Gson();
+        String response=shref.getString(AppConstants.PREF_NAME_EVENTLOG, "");
+        return gson.fromJson(response,
+                new TypeToken<List<Date>>(){}.getType());
+    }
+
+    /**
+     * @return true if current event log is up-to-date
+     */
+    public boolean compareEventLogWithPersistedLog ( ) {
+        ArrayList<Date> comparisionList = loadEventLog();
+        return comparisionList.equals(m_eventTimestamps);
+    }
+
+    /**
+     * replaces current event log with saved one
+     */
+    public void restoreEventlog ( ) {
+        m_eventTimestamps = loadEventLog();
+    }
+
+    /**
      * @return true if at least one timestamp exists
      */
     public boolean isActive ( ) {
@@ -97,20 +130,20 @@ public class EventLog {
     }
 
     /**
-     *
-     * @return true if the first break was logged (i.e. log size is two: checkin+1st checkout)
+     * @return true if time is currently running
+     */
+    public boolean isRunning ( ) { return ( m_eventTimestamps.size() % 2 ) == 1; }
+
+    /**
+     * @return true if resuming after 1st break (i.e. log size = 3: checkin,checkout, checkin)
      */
     public boolean isFirstBreakLogged() {
-        return m_eventTimestamps.size() == 2;
+        return m_eventTimestamps.size() == 3;
     }
 
-    public void restoreEventlog ( ) {
-        SharedPreferences shref;
-        SharedPreferences.Editor editor;
-        shref = App.getApplication().getMySharedPreferences();
-        Gson gson = new Gson();
-        String response=shref.getString(AppConstants.PREF_NAME_EVENTLOG, "");
-        ArrayList<Date> lstArrayList = gson.fromJson(response,
-                new TypeToken<List<Date>>(){}.getType());
+    public long getSecondsSinceStart ( ) {
+        if ( m_eventTimestamps.size ( ) == 0 ) return -1;
+        Date currentTime = Calendar.getInstance().getTime();
+        return ( m_eventTimestamps.get(0).getTime ( ) - currentTime.getTime() ) / 1000;
     }
 }

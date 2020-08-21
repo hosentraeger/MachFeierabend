@@ -1,6 +1,8 @@
 package de.fsiebecke.machfeierabend;
 
+import android.app.AlertDialog;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -27,7 +29,6 @@ public class ClearFromRecentService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         Log.d("ClearFromRecentService", "END");
-        // shutdown app
         App.getApplication().shutdown();
         stopSelf();
     }

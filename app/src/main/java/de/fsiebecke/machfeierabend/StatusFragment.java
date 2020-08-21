@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -57,12 +56,13 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"start clicked." );
-                App.getApplication().startAlarms();
                 App.getApplication().getEventLog().logEvent();
-                App.getApplication().setTimerIsRunning(true);
-                m_timeLeft = App.getApplication().getRemainingWorktime();
-                setRemainingTime ( );
-                updateButtonStates();
+                if ( App.getApplication().getEventLog().isFirstBreakLogged ( ) ) {
+                    Toast.makeText(getActivity(), R.string.info_individual_break_calculated,
+                            Toast.LENGTH_LONG).show();
+                }
+                start ( );
+                refreshDisplay();
             }
         });
 
@@ -70,14 +70,10 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"pause clicked." );
-                App.getApplication().setTimerIsRunning(false);
-                updateButtonStates();
                 App.getApplication().cancelAlarms ( );
                 App.getApplication().getEventLog().logEvent();
-                if ( App.getApplication().getEventLog().isFirstBreakLogged ( ) ) {
-                    Toast.makeText(getActivity(), R.string.info_individual_break_calculated,
-                            Toast.LENGTH_LONG).show();
-                }
+                App.getApplication().setTimerIsRunning(false);
+                refreshDisplay();
             }
         });
 
@@ -85,18 +81,43 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"stop clicked." );
+                // TODO: see issue #16
+                /*
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(R.string.dialog_title_data_found);
+                    builder.setMessage(R.string.dialog_details_data_found);
+
+                    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            App.getApplication().getEventLog().restoreEventlog();
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertdialog = builder.create();
+                    alertdialog.show();
+                 */
                 App.getApplication().cancelAlarms();
                 App.getApplication().setTimerIsRunning(false);
                 App.getApplication().getEventLog().clearLog();
+                App.getApplication().getEventLog().saveEventlog();
                 App.getApplication().stopRingtone();
                 updateButtonStates();
                 m_timeLeft = App.getApplication().getRemainingWorktime();
-                m_info.setText("");
+                m_info.setText(R.string.info_app_usage);
                 m_muteButton.setVisibility(View.INVISIBLE);
-                setRemainingTime ( );
+                refreshDisplay();
             }
         });
 
+        // create a timer that counts down our "remaining worktime" every second
         final Handler refreshHandler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
@@ -132,23 +153,29 @@ public class StatusFragment extends Fragment {
         return v;
     }
 
-    void setRemainingTime ( ) {
-        long s = m_timeLeft;
-        long h = s / 3600;
-        s -= 3600 * h;
-        long m = s / 60;
-        s -= m * 60;
-        String remainingWorktime = String.format ( "%02d:%02d:%02d", h, m, s );
-        m_textViewRemainingTime.setText(remainingWorktime);
+    /**
+     * starts the timer
+     */
+    public void start() {
+        App.getApplication().startAlarms();
+        App.getApplication().setTimerIsRunning(true);
     }
-    @Override
-    public void onResume() {
-        Log.d(TAG,"onResume." );
+
+    /**
+     * re-calculates remaining time, displays it
+     */
+    public void refreshDisplay ( ) {
         m_timeLeft = App.getApplication().getRemainingWorktime();
         if ( m_timeLeft < 0 )
             m_timeLeft = 0;
-
         setRemainingTime ( );
+        updateButtonStates();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG,"onResume." );
+        refreshDisplay();
         super.onResume();
     }
 
@@ -158,12 +185,38 @@ public class StatusFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * updates textview which shows remaining time
+     */
+    void setRemainingTime ( ) {
+        String remainingWorktime = "--.--.--";
+        long s = m_timeLeft;
+        if ( s > 0 )  {
+            long h = s / 3600;
+            s -= 3600 * h;
+            long m = s / 60;
+            s -= m * 60;
+            remainingWorktime = String.format("%02d:%02d:%02d", h, m, s);
+        };
+        m_textViewRemainingTime.setText(remainingWorktime);
+    }
+
+    /**
+     * treat image button
+     * @param b the button to show or hide
+     * @param bid it's id
+     * @param enabled show or hide
+     */
     private void enableImageButton ( ImageButton b, int bid, boolean enabled ) {
         b.setEnabled(enabled);
         b.setClickable(enabled);
         b.setAlpha ( enabled? 255: 75);
     }
 
+    /**
+     * decides what buttons should be enabled or disabled
+     * called from the three button handlers
+     */
     private void updateButtonStates ( ) {
         if ( App.getApplication().getTimerIsRunning()) {
             enableImageButton(m_startButton, R.id.startButton,false);
@@ -172,8 +225,7 @@ public class StatusFragment extends Fragment {
         } else {
             enableImageButton(m_startButton, R.id.startButton,true);
             enableImageButton(m_pauseButton, R.id.pauseButton, false);
-            if ( App.getApplication().getEventLog().calculateTime(
-                    EventLog.CHECKIN_STATE.CHECKED_IN) > 0 )
+            if ( App.getApplication().getEventLog().isActive( ) )
                 enableImageButton(m_stopButton,R.id.stopButton, true);
             else
                 enableImageButton(m_stopButton,R.id.stopButton, false);

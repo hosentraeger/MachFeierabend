@@ -1,6 +1,7 @@
 package de.fsiebecke.machfeierabend;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class StatusFragment extends Fragment {
@@ -80,40 +82,36 @@ public class StatusFragment extends Fragment {
         m_stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"stop clicked." );
-                // TODO: see issue #16
-                /*
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle(R.string.dialog_title_data_found);
-                    builder.setMessage(R.string.dialog_details_data_found);
+            Log.d(TAG,"stop clicked." );
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.dialog_title_session_stop);
+                    builder.setMessage(R.string.dialog_details_session_stop);
 
-                    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
                     });
 
-                    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            App.getApplication().getEventLog().restoreEventlog();
+                            App.getApplication().cancelAlarms();
+                            App.getApplication().setTimerIsRunning(false);
+                            App.getApplication().getEventLog().clearLog();
+                            App.getApplication().getEventLog().saveEventlog();
+                            App.getApplication().stopRingtone();
+                            updateButtonStates();
+                            m_timeLeft = App.getApplication().getRemainingWorktime();
+                            m_info.setText(R.string.info_app_usage);
+                            m_muteButton.setVisibility(View.INVISIBLE);
+                            refreshDisplay();
                             dialog.cancel();
                         }
                     });
                     AlertDialog alertdialog = builder.create();
                     alertdialog.show();
-                 */
-                App.getApplication().cancelAlarms();
-                App.getApplication().setTimerIsRunning(false);
-                App.getApplication().getEventLog().clearLog();
-                App.getApplication().getEventLog().saveEventlog();
-                App.getApplication().stopRingtone();
-                updateButtonStates();
-                m_timeLeft = App.getApplication().getRemainingWorktime();
-                m_info.setText(R.string.info_app_usage);
-                m_muteButton.setVisibility(View.INVISIBLE);
-                refreshDisplay();
             }
         });
 

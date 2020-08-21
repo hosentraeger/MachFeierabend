@@ -64,4 +64,6 @@
     <string name="dialog_title_data_found">Vorhandene Daten weiter verwenden?</string>
     <string name="no">nein</string>
     <string name="yes">ja</string>
+    <string name="dialog_title_session_stop">Session abbrechen</string>
+    <string name="dialog_details_session_stop">Willst du die Session abbrechen?</string>
 </resources>
